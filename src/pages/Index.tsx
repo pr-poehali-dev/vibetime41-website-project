@@ -11,6 +11,7 @@ const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
   const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -24,6 +25,9 @@ const Index = () => {
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
+      const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (window.scrollY / windowHeight) * 100;
+      setScrollProgress(scrolled);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -52,7 +56,13 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+      <div className="fixed top-0 left-0 right-0 h-1 bg-border/30 z-[60]">
+        <div 
+          className="h-full bg-gradient-to-r from-primary via-accent to-secondary transition-all duration-300 ease-out"
+          style={{ width: `${scrollProgress}%` }}
+        />
+      </div>
+      <nav className="fixed top-1 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold gradient-text">VibeTime41</h1>
