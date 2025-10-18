@@ -20,6 +20,10 @@ const Index = () => {
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const menuItems = ['Главная', 'Команда', 'Услуги', 'События', 'Блог', 'Контакты'];
 
   useEffect(() => {
@@ -62,6 +66,17 @@ const Index = () => {
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
+
+      <Button
+        onClick={scrollToTop}
+        size="icon"
+        className={`fixed bottom-8 right-8 z-50 rounded-full w-12 h-12 bg-primary hover:bg-primary/90 shadow-lg glow-effect transition-all duration-300 ${
+          scrollY > 400 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10 pointer-events-none'
+        }`}
+        aria-label="Наверх"
+      >
+        <Icon name="ArrowUp" size={24} />
+      </Button>
       <nav className="fixed top-1 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
