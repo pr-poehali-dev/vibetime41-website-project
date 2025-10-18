@@ -178,7 +178,7 @@ const Index = () => {
             ].map((member, index) => (
               <Card 
                 key={member.name} 
-                className="p-6 text-center hover:scale-105 transition-transform duration-300 bg-card border-primary/20 hover:border-primary/50 animate-slide-up"
+                className="p-6 text-center transition-all duration-300 bg-card border-primary/20 hover:border-primary/50 animate-slide-up hover:shadow-2xl hover:-translate-y-2 hover:shadow-primary/20"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="w-24 h-24 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center glow-effect">
@@ -208,7 +208,7 @@ const Index = () => {
             ].map((service, index) => (
               <Card 
                 key={service.title} 
-                className="p-8 hover:shadow-2xl transition-all duration-300 bg-card border-primary/20 hover:border-accent/50 animate-fade-in group"
+                className="p-8 transition-all duration-300 bg-card border-primary/20 hover:border-accent/50 animate-fade-in group hover:shadow-2xl hover:-translate-y-2 hover:shadow-accent/20"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
                 <div className="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-primary to-accent flex items-center justify-center group-hover:scale-110 transition-transform">
