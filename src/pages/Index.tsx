@@ -3,16 +3,21 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Icon from '@/components/ui/icon';
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
+    setMobileMenuOpen(false);
     const element = document.getElementById(id);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  const menuItems = ['Главная', 'Команда', 'Услуги', 'События', 'Блог', 'Контакты'];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -20,8 +25,9 @@ const Index = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold gradient-text">VibeTime41</h1>
+            
             <div className="hidden md:flex gap-6">
-              {['Главная', 'Команда', 'Услуги', 'События', 'Блог', 'Контакты'].map((item) => (
+              {menuItems.map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item.toLowerCase())}
@@ -31,7 +37,34 @@ const Index = () => {
                 </button>
               ))}
             </div>
-            <Button className="bg-primary hover:bg-primary/90">Связаться</Button>
+            
+            <div className="hidden md:block">
+              <Button className="bg-primary hover:bg-primary/90">Связаться</Button>
+            </div>
+
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Icon name="Menu" size={24} />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] bg-background border-primary/20">
+                <div className="flex flex-col gap-6 mt-8">
+                  {menuItems.map((item) => (
+                    <button
+                      key={item}
+                      onClick={() => scrollToSection(item.toLowerCase())}
+                      className="text-lg font-medium hover:text-primary transition-colors text-left py-2 border-b border-border hover:border-primary"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                  <Button className="bg-primary hover:bg-primary/90 mt-4" onClick={() => scrollToSection('контакты')}>
+                    Связаться
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </nav>
