@@ -10,6 +10,7 @@ const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [visibleSections, setVisibleSections] = useState<Set<string>>(new Set());
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -27,6 +28,26 @@ const Index = () => {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => new Set(prev).add(entry.target.id));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
+    );
+
+    const sections = document.querySelectorAll('section[id]');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
   }, []);
 
   return (
@@ -118,7 +139,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="команда" className="py-24 bg-card/30">
+      <section id="команда" className={`py-24 bg-card/30 transition-all duration-1000 ${visibleSections.has('команда') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-4">
           <h2 className="text-5xl font-bold text-center mb-4 gradient-text">Наша Команда</h2>
           <p className="text-center text-muted-foreground mb-16 text-lg">Профессионалы своего дела</p>
@@ -146,7 +167,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="услуги" className="py-24">
+      <section id="услуги" className={`py-24 transition-all duration-1000 ${visibleSections.has('услуги') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-4">
           <h2 className="text-5xl font-bold text-center mb-4 gradient-text">Наши Услуги</h2>
           <p className="text-center text-muted-foreground mb-16 text-lg">Полный спектр организации мероприятий</p>
@@ -176,7 +197,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="события" className="py-24 bg-card/30">
+      <section id="события" className={`py-24 bg-card/30 transition-all duration-1000 ${visibleSections.has('события') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-4">
           <h2 className="text-5xl font-bold text-center mb-4 gradient-text">Портфолио</h2>
           <p className="text-center text-muted-foreground mb-16 text-lg">Наши успешные проекты</p>
@@ -212,7 +233,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="блог" className="py-24">
+      <section id="блог" className={`py-24 transition-all duration-1000 ${visibleSections.has('блог') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-4">
           <h2 className="text-5xl font-bold text-center mb-4 gradient-text">Блог и Тренды</h2>
           <p className="text-center text-muted-foreground mb-16 text-lg">Идеи и вдохновение для ваших событий</p>
@@ -245,7 +266,7 @@ const Index = () => {
         </div>
       </section>
 
-      <section id="контакты" className="py-24 bg-card/30">
+      <section id="контакты" className={`py-24 bg-card/30 transition-all duration-1000 ${visibleSections.has('контакты') ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-5xl font-bold text-center mb-4 gradient-text">Свяжитесь с нами</h2>
