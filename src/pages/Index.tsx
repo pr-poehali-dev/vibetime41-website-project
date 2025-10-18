@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -9,6 +9,7 @@ import Icon from '@/components/ui/icon';
 const Index = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0);
 
   const scrollToSection = (id: string) => {
     setActiveSection(id);
@@ -18,6 +19,15 @@ const Index = () => {
   };
 
   const menuItems = ['Главная', 'Команда', 'Услуги', 'События', 'Блог', 'Контакты'];
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -70,11 +80,23 @@ const Index = () => {
       </nav>
 
       <section id="главная" className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 animate-float" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div 
+          className="absolute inset-0 bg-gradient-to-br from-primary/20 via-accent/20 to-secondary/20 animate-float"
+          style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+        />
+        <div 
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/30 rounded-full blur-3xl animate-pulse"
+          style={{ transform: `translate(${scrollY * 0.3}px, ${scrollY * 0.4}px)` }}
+        />
+        <div 
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-pulse delay-1000"
+          style={{ transform: `translate(${-scrollY * 0.2}px, ${scrollY * 0.3}px)` }}
+        />
         
-        <div className="container mx-auto px-4 z-10">
+        <div 
+          className="container mx-auto px-4 z-10"
+          style={{ transform: `translateY(${scrollY * 0.15}px)`, opacity: Math.max(0, 1 - scrollY / 500) }}
+        >
           <div className="max-w-4xl mx-auto text-center animate-fade-in">
             <h2 className="text-6xl md:text-8xl font-bold mb-6 gradient-text">
               Создаём Незабываемые События
